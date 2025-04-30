@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_PATH = path.join(__dirname, 'todos.json');
+const TODOS_PATH = path.join(__dirname, 'todos.json');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -15,13 +15,22 @@ app.use(express.static('public'));
 
 // Načtení todos
 async function loadTodos() {
-  const data = await fs.readFile(DB_PATH, 'utf-8');
-  return JSON.parse(data);
+  try {
+    const data = await fs.readFile(TODOS_PATH, 'utf-8');
+    const todos = JSON.parse(data);
+
+    return todos.map((todo) => ({
+      ...todo,
+      priority: todo.priority ?? 'normal',
+    }));
+  } catch (err) {
+    return [];
+  }
 }
 
 // Uložení todos
 async function saveTodos(todos) {
-  await fs.writeFile(DB_PATH, JSON.stringify(todos, null, 2), 'utf-8');
+  await fs.writeFile(TODOS_PATH, JSON.stringify(todos, null, 2), 'utf-8');
 }
 
 // Seznam todoček
