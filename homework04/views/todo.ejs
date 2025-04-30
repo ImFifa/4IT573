@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <title>
+        <%= todo.title %>
+    </title>
+</head>
+
+<body class='bg-gray-100 pt-[50px]'>
+    <div class='max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md'>
+        <h1 class='text-3xl font-black mb-4'>
+            <%= todo.title %>
+        </h1>
+
+        <div>
+
+            <div class='flex gap-4 items-center'>
+                <p>Stav: <strong>
+                        <%= todo.done ? 'Hotovo' : 'Nedokončeno' %>
+                    </strong></p>
+
+                <div class='flex flex-col justify-start items-start gap-4'>
+                    <form action="/todo/<%= todo.id %>/toggle" method="post">
+                        <button type="submit"
+                            class='px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold rounded cursor-pointer'>Změnit
+                            stav</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class='flex-col justify-start items-start mt-6'>
+                <h2 class='font-semibold mb-2'>Upravit titulek</h2>
+                <form action="/todo/<%= todo.id %>/edit" method="post">
+                    <input type="text" name="title" value="<%= todo.title %>"
+                        class='min-w-[300px] border-1 border-gray-300 rounded-md p-2 mb-4' />
+                    <button type="submit"
+                        class='rounded px-4 py-2 bg-green-600 text-white font-bold cursor-pointer'>Uložit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class='flex flex-col sm:flex-row justify-start items-start sm:justify-between gap-4 mt-8'>
+            <a href="/" class='rounded px-3 py-2 hover:bg-gray-100 inline-block border-1 border-gray-300'>←
+                Zpět na
+                seznam</a>
+            <form action="/todo/<%= todo.id %>/delete" method="post">
+                <button type="submit"
+                    class='px-3 py-2 bg-red-500 hover:bg-red-700 text-white font-semibold rounded cursor-pointer'>Odstranit
+                    todo</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
